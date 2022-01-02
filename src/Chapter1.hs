@@ -551,8 +551,8 @@ Casual reminder about adding top-level type signatures for all functions :)
 
 mid :: Ord a => a -> a -> a -> a
 mid x y z
-    | x > y && y > z || z > y && y > x = y
-    | y > z && z > x || x > z && z > y = z
+    | x >= y && y >= z || z >= y && y >= x = y
+    | x >= z && z >= y || y >= z && z >= x = z
     | otherwise = x
 
 {- |
@@ -641,7 +641,7 @@ sumLast2::Int -> Int
 sumLast2 n = snd (lastforsumLast2 an )+ snd (lastforsumLast2 (fst (lastforsumLast2 an)))
   where
     lastforsumLast2::Int -> (Int,Int)
-    lastforsumLast2 n = divMod n 10
+    lastforsumLast2 a = divMod a 10
     an = abs n
   -- snd (divMod (fst (divMod n 10)) 10)
 
