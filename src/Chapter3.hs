@@ -50,6 +50,7 @@ signatures in places where you can't by default. We believe it's helpful to
 provide more top-level type signatures, especially when learning Haskell.
 -}
 {-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Chapter3 where
 
@@ -1009,6 +1010,7 @@ newtype Gold = Gold {getGold :: Int}deriving(Show)
 instance Append Gold where
   append :: Gold -> Gold -> Gold
   append a b = Gold $ getGold a + getGold b
+
 newtype List a = List {getList :: [a]}deriving(Show)
 instance Append (List a) where
   append :: List a ->  List a -> List a
@@ -1131,8 +1133,43 @@ properties using typeclasses, but they are different data types in the end.
 Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
+{-
+class Fighter a where
+  fighting ::a -> a -> a
+  fighterHealth :: a -> (Int,Int)
+  fighterAttack :: a -> Int
 
+data HeroActions = AttackEnemy | Drink | Spell
+type HeroListActions = [HeroActions]
+data MonsterActions = AttackOther | Run
+type MonsterListActions = [MonsterActions]
+data HeroEquipment = HeroEquipment{
+  getHeroHealth :: Int,
+  getHeroAttack :: Int,
+  getHeroDefense:: Int
+}
+data MonsterEquipment = MonsterEquipment{
+  getMonsterHealth  ::  Int,
+  getMonsterAttack  ::  Int
+}
+data Hero = Hero {
+  getHeroActions   :: HeroActions,
+  getHeroEquipment :: HeroEquipment
+}
+data Monsters = Monsters {
+  getMonsterActions   :: MonsterActions,
+  getMonsterEquipment :: MonsterEquipment
+}
 
+instance Fighter Hero where
+  fighting  :: (Fighter a)=> Hero -> a -> Hero
+
+  fighterHealth :: Hero -> (Int,Int)
+  fighterHealth a = (getHeroHealth $ getHeroEquipment a,getHeroDefense $ getHeroEquipment a)
+  fighterAttack :: Hero -> Int
+  fighterAttack a = getHeroAttack $ getHeroEquipment a
+-}
+-- Similarities that could be abstracted : the equipment, the actions, the Attack action
 {-
 You did it! Now it is time to open pull request with your changes
 and summon @vrom911 and @chshersh for the review!
