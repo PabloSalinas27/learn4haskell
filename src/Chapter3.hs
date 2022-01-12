@@ -1131,8 +1131,28 @@ properties using typeclasses, but they are different data types in the end.
 Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
+class Fighter f where 
+  doAction:: f -> f -> f
+  -- endFight:: a -> a -> a
+{-
+Need the stats of the fighters !!!!!!
+xdd
 
 
+
+-}
+
+
+
+data HeroFighterAction = Attack | Drink | Cast deriving(Show)
+data MonsterFighterAction = Attack | Run deriving(Show) --Run could be represented by just ending the list, but maybe this is more clear
+newtype HeroFighter = [HeroFighterAction]deriving(Show)
+newtype MonsterFighter = [MonsterFighterAction]deriving(Show)
+
+instance Fighter MonsterFighter where
+  doAction :: (Fighter f) => MonsterFighter -> f -> f
+  doAction Attack:xs f = attackF f 
+  attackF :: 
 {-
 You did it! Now it is time to open pull request with your changes
 and summon @vrom911 and @chshersh for the review!
